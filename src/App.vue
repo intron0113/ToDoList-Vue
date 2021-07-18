@@ -5,33 +5,10 @@
     </header>
 
     <form class="radio_button">
-      <input
-        type="radio"
-        name="syurui"
-        checked="checked"
-        id="radio-all-select"
-        onchange="radioChange()"
-        value="all"
-        v-model="picked"
-      />すべて
-      <input
-        type="radio"
-        name="syurui"
-        id="adio-working-select"
-        onchange="radioChange()"
-        value="doing"
-        v-model="picked"
-      />作業中
-      <input
-        type="radio"
-        name="syurui"
-        id="radio-done-select"
-        onchange="radioChange()"
-        value="done"
-        v-model="picked"
-      />完了
+      <input type="radio" name="select" value="all" v-model="picked" />すべて
+      <input type="radio" name="select" value="doing" v-model="picked" />作業中
+      <input type="radio" name="select" value="done" v-model="picked" />完了
     </form>
-
     <table>
       <thead>
         <th>ID</th>
@@ -54,6 +31,7 @@
 
     <h2>新規タスクの追加</h2>
     <p>{{ todos }}</p>
+    <p>{{ picked }}</p>
 
     <input id="input-todo" type="text" v-model="newItem" />
     <button id="add-button" @click="addItem">追加</button>
@@ -67,7 +45,26 @@ export default {
       newItem: '',
       todos: [],
       addTask: '',
+      picked: 'all',
     };
+  },
+  watch: {
+    picked: function() {
+      if (this.picked === 'all') {
+        this.todos.slice();
+        console.log(this.picked);
+      } else if (this.picked === 'doing') {
+        console.log(this.picked);
+        this.todos.filter((todo) => {
+          return todo.status === '作業中';
+        });
+      } else if (this.picked === 'done') {
+        console.log(this.picked);
+        this.todos.filter((todo) => {
+          return todo.status === '完了';
+        });
+      }
+    },
   },
   methods: {
     addItem: function() {
@@ -93,10 +90,5 @@ export default {
       }
     },
   },
-  // computed:{
-  //   picked:function(){
-
-  //   }
-  // }
 };
 </script>
