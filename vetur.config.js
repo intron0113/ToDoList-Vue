@@ -37,4 +37,10 @@ module.exports = {
       globalComponents: ['./src/components/**/*.vue'],
     },
   ],
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      title: 'Vue-Todo-List',
+    },
+  },
 };
