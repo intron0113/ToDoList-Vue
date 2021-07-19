@@ -16,7 +16,7 @@
         <th>状態</th>
       </thead>
       <tbody>
-        <tr v-for="(todo, index) in todos" :key="index">
+        <tr v-for="(todo, index) of filterring(picked)" :key="index">
           <td>{{ todo.id }}</td>
           <td>{{ todo.comment }}</td>
           <td>
@@ -30,8 +30,6 @@
     </table>
 
     <h2>新規タスクの追加</h2>
-    <p>{{ todos }}</p>
-    <p>{{ picked }}</p>
 
     <input id="input-todo" type="text" v-model="newItem" />
     <button id="add-button" @click="addItem">追加</button>
@@ -44,42 +42,24 @@ export default {
     return {
       newItem: '',
       todos: [],
+      todo: {},
       addTask: '',
       picked: 'all',
     };
   },
-  watch: {
-    picked: function() {
-      if (this.picked === 'all') {
-        this.todos.slice();
-        console.log(this.picked);
-      } else if (this.picked === 'doing') {
-        console.log(this.picked);
-        this.todos.filter((todo) => {
-          return todo.status === '作業中';
-        });
-      } else if (this.picked === 'done') {
-        console.log(this.picked);
-        this.todos.filter((todo) => {
-          return todo.status === '完了';
-        });
-      }
-    },
-  },
   methods: {
     addItem: function() {
-      if (this.newItem == '') return; //タスク未入力の場合は追加しない
-      let todo = {
+      if (this.newItem == '') return;
+      this.todo = {
         id: this.todos.length,
         comment: this.newItem,
         status: '作業中',
       };
-      this.todos.push(todo);
-      this.newItem = ''; //タスク追加後に入力欄を空にする
+      this.todos.push(this.todo);
+      this.newItem = '';
     },
     deleteBtn: function(index) {
-      //indexを引数に指定
-      this.todos.splice(index, 1); //indexで指定された要素を1つ削除
+      this.todos.splice(index, 1);
       this.todos.reduce((Idnum, todo) => (todo.id = Idnum + 1), -1);
     },
     statusBtn: function(todo) {
@@ -88,6 +68,23 @@ export default {
       } else {
         todo.status = '作業中';
       }
+    },
+  },
+  computed: {
+    filterring() {
+      return function() {
+        if (this.picked === 'all') {
+          return this.todos;
+        } else if (this.picked === 'doing') {
+          return this.todos.filter((todo) => {
+            return todo.status === '作業中';
+          });
+        } else if (this.picked === 'done') {
+          return this.todos.filter((todo) => {
+            return todo.status === '完了';
+          });
+        }
+      };
     },
   },
 };
