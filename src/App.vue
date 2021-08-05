@@ -16,7 +16,7 @@
         <th>状態</th>
       </thead>
       <tbody>
-        <tr v-for="(todo, index) of filterring(picked)" :key="index">
+        <tr v-for="(todo, index) of computedTodos(picked)" :key="index">
           <td>{{ todo.id }}</td>
           <td>{{ todo.comment }}</td>
           <td>
@@ -71,20 +71,14 @@ export default {
     },
   },
   computed: {
-    filterring() {
-      return function() {
-        if (this.picked === 'all') {
-          return this.todos;
-        } else if (this.picked === 'doing') {
-          return this.todos.filter((todo) => {
-            return todo.status === '作業中';
-          });
-        } else if (this.picked === 'done') {
-          return this.todos.filter((todo) => {
-            return todo.status === '完了';
-          });
-        }
-      };
+    computedTodos() {
+      if (this.picked === 'doing') {
+        return this.todos.filter((todo) => todo.status === '作業中');
+      } else if (this.picked === 'done') {
+        return this.todos.filter((todo) => todo.status === '完了');
+      } else {
+        return this.todos;
+      }
     },
   },
 };
