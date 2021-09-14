@@ -16,7 +16,7 @@
         <th>状態</th>
       </thead>
       <tbody>
-        <tr v-for="(todo, index) of computedTodos(picked)" :key="index">
+        <tr v-for="(todo, index) of computedTodos" :key="index">
           <td>{{ todo.id }}</td>
           <td>{{ todo.comment }}</td>
           <td>
